@@ -1,12 +1,35 @@
+import { ApiProperty } from '@nestjs/swagger';
+import {
+    IsEnum, IsString, IsUrl, IsUUID, Length,
+} from 'class-validator';
 import { HttpMethodEnum } from '../../../general/http-method.enum';
 import { IInspectedServiceEntity } from './inspected-service.entity.interface';
 
 export class InspectedServiceApiEntity implements IInspectedServiceEntity {
-    id: string;
+  @ApiProperty({
+      type: String,
+  })
+  @IsUUID('all')
+  id: string;
 
-    checkUrl: string;
+  @ApiProperty({
+      type: String,
+  })
+  @IsUrl({
+      require_protocol: true,
+  })
+  checkUrl: string;
 
-    method: HttpMethodEnum;
+  @ApiProperty({
+      enum: HttpMethodEnum,
+  })
+  @IsEnum(HttpMethodEnum)
+  method: HttpMethodEnum;
 
-    name: string;
+  @ApiProperty({
+      type: String,
+  })
+  @IsString()
+  @Length(1, 50)
+  name: string;
 }
