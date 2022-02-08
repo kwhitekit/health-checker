@@ -23,6 +23,10 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
         subscription.add(subscriberId);
     }
 
+    public unsubscribeAll(subscriberId: string) {
+        this.subscribersMap.delete(subscriberId);
+    }
+
     public unsubscribe(serviceId: string, subscriberId): void {
         this.subscribersMap.get(serviceId)?.delete(subscriberId);
     }
