@@ -5,10 +5,11 @@ import { ISubscriptionEntity } from './subscription.entity.interface';
 
 export class SubscriptionApiEntity implements ISubscriptionEntity {
   @ApiProperty({
-      type: String,
+      type: [String],
+      default: [],
   })
-  @IsUUID('all')
-  service_id: string;
+  @IsUUID('all', { each: true })
+  serviceIds: string[] = [];
 
   @ApiProperty({
       enum: SubscriberTypeEnum,
