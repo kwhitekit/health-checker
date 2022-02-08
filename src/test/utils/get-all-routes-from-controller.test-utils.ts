@@ -6,7 +6,9 @@ export type TAllRoutersInController = {
 }[];
 
 export function getAllRoutesFromController(app: INestApplication, startEndpoint: string) {
-    const _startEndpoint = startEndpoint.startsWith('/') ? startEndpoint : `/${startEndpoint}`;
+    const _startEndpoint = startEndpoint.startsWith('/')
+        ? startEndpoint
+        : `/${startEndpoint}`;
 
     return app
         .getHttpServer()
@@ -17,12 +19,9 @@ export function getAllRoutesFromController(app: INestApplication, startEndpoint:
         .reduce((acc, layer) => {
             if (layer.route && (layer?.route?.path as string).startsWith(_startEndpoint)) {
                 const { path } = layer.route;
-                const { method } = layer.route.stack[0];
+                const [{ method }] = layer.route.stack;
 
-                acc.push({
-                    path,
-                    method,
-                });
+                acc.push({ path, method });
             }
 
             return acc;
