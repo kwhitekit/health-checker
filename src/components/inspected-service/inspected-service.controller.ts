@@ -2,9 +2,12 @@ import {
     Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put,
 } from '@nestjs/common';
 import { CreateInspectedServiceDto } from './dto/create.inspect-service.dto';
+import { InspectedServiceService } from './inspected-service.service';
 
 @Controller('services')
 export class InspectedServiceController {
+    constructor(private inspectedServiceService: InspectedServiceService) {}
+
     @Get('/:serviceId/status')
     getService(@Param('serviceId', ParseUUIDPipe) serviceId: string): Promise<unknown> {
         return Promise.resolve(serviceId);
@@ -17,7 +20,7 @@ export class InspectedServiceController {
 
     @Post()
     addService(@Body() data: CreateInspectedServiceDto): Promise<unknown> {
-        return Promise.resolve(data);
+        return this.inspectedServiceService.createService(data);
     }
 
     @Put(':serviceId')
