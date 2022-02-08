@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { InspectedServiceDbEntity } from '../inspected-service/common/inspected-service.db-entity';
 import { InspectedServiceModule } from '../inspected-service/inspected-service.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,6 +17,9 @@ import { AppService } from './app.service';
             password: process.env.PG_PASS ?? 'postgres',
             database: process.env.PG_DATABASE ?? 'health-checker',
             synchronize: true,
+            entities: [
+                InspectedServiceDbEntity,
+            ],
         }),
         InspectedServiceModule,
     ],
