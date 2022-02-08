@@ -1,4 +1,4 @@
 export interface ISubMonitoring {
-    subscribe: (serviceId: string) => void,
-    unsubscribe: (serviceId: string) => void,
+    subscribe: (serviceId: string, subscriberId: string) => void,
+    unsubscribe: (serviceId: string, subscriberId: string) => void,
 }
