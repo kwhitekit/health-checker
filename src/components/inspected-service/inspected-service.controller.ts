@@ -1,6 +1,7 @@
 import {
     Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put,
 } from '@nestjs/common';
+import { CreateInspectedServiceDto } from './dto/create.inspect-service.dto';
 
 @Controller('services')
 export class InspectedServiceController {
@@ -15,7 +16,7 @@ export class InspectedServiceController {
     }
 
     @Post()
-    addService(@Body() data: unknown): Promise<unknown> {
+    addService(@Body() data: CreateInspectedServiceDto): Promise<unknown> {
         return Promise.resolve(data);
     }
 
