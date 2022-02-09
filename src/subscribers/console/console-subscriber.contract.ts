@@ -5,11 +5,11 @@ import { ConsoleSubscriber } from './console.subscriber';
 export const CONSOLE_SUBSCRIBER_CONTRACT: TSubscriberContract<SubscriberTypeEnum.CONSOLE> = {
     type: SubscriberTypeEnum.CONSOLE,
 
-    dtoValidator(data) {
-        return data?.type === SubscriberTypeEnum.CONSOLE;
+    dtoValidator(dto) {
+        return dto?.type === SubscriberTypeEnum.CONSOLE;
     },
 
-    resolveSubscriber(data) {
-        return ConsoleSubscriber.get(data.type, console.info);
+    resolveSubscriber(dto) {
+        return ConsoleSubscriber.get(dto);
     },
 };

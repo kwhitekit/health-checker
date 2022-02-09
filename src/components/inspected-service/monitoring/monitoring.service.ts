@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ALL_SUBSCRIBERS_MAP, TSubscriberDto } from '../../../subscribers/all-subscribers-map';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 import { BaseSubscriber } from '../../subscription/subscriber-declaration/base-subscriber';
+import { IOnMessage } from '../../subscription/subscriber-declaration/onmessage.interface';
 import { InspectedServiceService } from '../inspected-service.service';
 import { IPubMonitoring } from './pub-monitoring.interface';
 import { ISubMonitoring } from './sub-monitoring.interface';
@@ -71,14 +72,14 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
         // TODO add more serious and standard checking
         if (!firstHealth.status) return;
 
-        const subscribersMap = this.serviceSubscribersWithCb.get(serviceId) || new Map<string, Promise<BaseSubscriber<SubscriberTypeEnum>>>();
+        const subscribersMap = this.serviceSubscribersWithCb.get(serviceId) || new Map<string, Promise<IOnMessage>>();
 
         subscribersMap.forEach((subscriberPromise) => subscriberPromise
             .then((subscriber) => subscriber.onMessage(firstHealth)));
 
         const monitoring = setInterval(async () => {
             const health = await this.inspectedServiceService.askHealth(serviceId);
-            const actualSubscribers = this.serviceSubscribersWithCb.get(serviceId) || new Map<string, Promise<BaseSubscriber<SubscriberTypeEnum>>>();
+            const actualSubscribers = this.serviceSubscribersWithCb.get(serviceId) || new Map<string, Promise<IOnMessage>>();
 
             actualSubscribers
                 .forEach((subscriberPromise) => subscriberPromise
