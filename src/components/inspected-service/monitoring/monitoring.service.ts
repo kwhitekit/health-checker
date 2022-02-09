@@ -66,13 +66,20 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
     public async startMonitoring(serviceId: string) {
         if (this.serviceMap.has(serviceId)) return;
 
-        const firstMonitor = await this.inspectedServiceService.askHealth(serviceId);
+        const firstHealth = await this.inspectedServiceService.askHealth(serviceId);
 
         // TODO add more serious and standard checking
-        if (!firstMonitor.status) return;
+        if (!firstHealth.status) return;
+
+        const subscribersMap = this.serviceSubscribersWithCb.get(serviceId) || new Map();
+
+        subscribersMap.forEach((onMessage) => onMessage(firstHealth));
 
         const monitoring = setInterval(async () => {
-            await this.inspectedServiceService.askHealth(serviceId);
+            const health = await this.inspectedServiceService.askHealth(serviceId);
+            const actualSubscribers = this.serviceSubscribersWithCb.get(serviceId) || new Map();
+
+            actualSubscribers.forEach((onMessage) => onMessage(health));
         }, 3000);
 
         this.serviceMap.set(serviceId, monitoring);
