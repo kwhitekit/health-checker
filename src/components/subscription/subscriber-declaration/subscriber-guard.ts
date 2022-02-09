@@ -39,9 +39,10 @@ export class SubscriberTypeServiceIdsGuard implements CanActivate {
       || !subscribersTypes.includes((body as { type: SubscriberTypeEnum }).type)
         ) throw new BadRequestException(`Expected: prop "type" with value from [${subscribersTypes.join()}]\nActual: "${(body as any).type}"`);
 
-        const ids = (body as { servicesIds?: string[] }).servicesIds;
+        const ids = (body as { serviceIds?: string[] }).serviceIds;
 
         if (!ids) throw new BadRequestException('"serviceIds" prop is required');
+        if (!Array.isArray(ids)) throw new BadRequestException('"serviceIds" prop should be an array');
         if (!ids.length) throw new BadRequestException('"servicesIds" should not be emplty');
 
         if (ids.some((id) => !isUUID(id, 'all'))) throw new BadRequestException('every item in "serviceIds" should be a valid string of "uuid" type');
