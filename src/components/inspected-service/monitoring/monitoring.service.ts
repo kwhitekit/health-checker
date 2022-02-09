@@ -15,6 +15,7 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
         subscriberId: string,
         constructorPayload: TSubscriberDto<SubscriberTypeEnum>,
     ): void {
+        console.log(serviceIds);
         serviceIds.forEach((serviceId) => {
             const subscribersWithCb = this.serviceSubscribersWithCb.get(serviceId);
 

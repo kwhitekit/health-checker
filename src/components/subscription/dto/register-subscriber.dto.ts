@@ -15,5 +15,5 @@ export class RegisterSubscriberDto implements TSubscriberDto<SubscriberTypeEnum>
     })
     @IsUUID('all', { each: true })
     @IsArray()
-    servicesIds: [string];
+    serviceIds: [string];
 }

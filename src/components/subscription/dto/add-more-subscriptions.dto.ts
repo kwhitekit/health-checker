@@ -13,5 +13,5 @@ export class AddMoreSubscriptionsDto {
   })
   @IsUUID('all', { each: true })
   @IsArray()
-  servicesIds: [string];
+  serviceIds: [string];
 }

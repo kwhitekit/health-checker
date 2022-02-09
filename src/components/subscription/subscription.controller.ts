@@ -13,14 +13,14 @@ export class SubscriptionController {
     @UseGuards(new SubscriberTypeServiceIdsGuard())
     @Post()
     public registerSubscriber<T extends RegisterSubscriberDto>(@Body() subscriberDto: T): Promise<void> {
-        const { servicesIds, ...constructorPayload } = subscriberDto;
+        const { serviceIds: servicesIds, ...constructorPayload } = subscriberDto;
 
         return this.subscriptionService.subscribe(servicesIds, constructorPayload);
     }
 
     @Post('add-more')
     addMoreSubscriptions(@Body() addMoreSubscriptionsDto: AddMoreSubscriptionsDto): Promise<void> {
-        const { servicesIds, subscriberId } = addMoreSubscriptionsDto;
+        const { serviceIds: servicesIds, subscriberId } = addMoreSubscriptionsDto;
 
         return this.subscriptionService.subscribe(servicesIds, subscriberId);
     }
