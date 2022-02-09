@@ -5,7 +5,7 @@ import {
 import { isUUID } from 'class-validator';
 import { FastifyRequest } from 'fastify';
 import { ALL_SUBSCRIBERS_MAP } from './all-subscribers-map';
-import { SubscriberTypeEnum } from './subscriber-type.enum';
+import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 
 const subscribersTypes = Object.values(SubscriberTypeEnum);
 

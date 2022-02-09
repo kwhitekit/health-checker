@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsUUID } from 'class-validator';
-import { SubscriberTypeEnum } from '../subscriber-declaration/subscriber-type.enum';
+import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 import { ISubscriptionEntity } from './subscription.entity.interface';
 
 export class SubscriptionApiEntity implements ISubscriptionEntity {

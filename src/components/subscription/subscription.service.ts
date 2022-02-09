@@ -5,7 +5,7 @@ import { MonitoringService } from '../inspected-service/monitoring/monitoring.se
 import { ISubMonitoring } from '../inspected-service/monitoring/sub-monitoring.interface';
 import { SubscriptionDbEntity } from './common/subscription.db-entity';
 import { TSubscriberDto } from './subscriber-declaration/all-subscribers-map';
-import { SubscriberTypeEnum } from './subscriber-declaration/subscriber-type.enum';
+import { SubscriberTypeEnum } from '../../subscribers/subscriber-type.enum';
 
 @Injectable()
 export class SubscriptionService {

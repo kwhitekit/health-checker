@@ -1,4 +1,4 @@
-import { SubscriberTypeEnum } from '../subscriber-declaration/subscriber-type.enum';
+import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 
 export interface ISubscriptionEntity {
   id: string;

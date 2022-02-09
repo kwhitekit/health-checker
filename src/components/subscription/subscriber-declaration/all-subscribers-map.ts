@@ -1,6 +1,6 @@
-import { CONSOLE_SUBSCRIBER_CONTRACT } from '../../../subscribers/console/console.subscriber';
+import { CONSOLE_SUBSCRIBER_CONTRACT } from '../../../subscribers/console/console-subscriber.contract';
 import { BaseSubscriber } from './base-subscriber';
-import { SubscriberTypeEnum } from './subscriber-type.enum';
+import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 
 export type TSubscriberDto<T extends SubscriberTypeEnum> = { type: T } & object;
 
