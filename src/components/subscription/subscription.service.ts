@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { MonitoringService } from '../inspected-service/monitoring/monitoring.service';
 import { ISubMonitoring } from '../inspected-service/monitoring/sub-monitoring.interface';
 import { SubscriptionDbEntity } from './common/subscription.db-entity';
-import { TSubscriberDto } from './subscriber-declaration/all-subscribers-map';
+import { TSubscriberDto } from '../../subscribers/all-subscribers-map';
 import { SubscriberTypeEnum } from '../../subscribers/subscriber-type.enum';
 
 @Injectable()

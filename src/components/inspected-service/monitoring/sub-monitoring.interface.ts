@@ -1,4 +1,4 @@
-import { TSubscriberDto } from '../../subscription/subscriber-declaration/all-subscribers-map';
+import { TSubscriberDto } from '../../../subscribers/all-subscribers-map';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 
 export interface ISubMonitoring {

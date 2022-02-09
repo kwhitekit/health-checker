@@ -1,4 +1,4 @@
-import { TSubscriberContract } from '../../components/subscription/subscriber-declaration/all-subscribers-map';
+import { TSubscriberContract } from '../all-subscribers-map';
 import { SubscriberTypeEnum } from '../subscriber-type.enum';
 import { ConsoleSubscriber } from './console.subscriber';
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ALL_SUBSCRIBERS_MAP, TSubscriberDto } from '../../subscription/subscriber-declaration/all-subscribers-map';
+import { ALL_SUBSCRIBERS_MAP, TSubscriberDto } from '../../../subscribers/all-subscribers-map';
 import { TOnmessage } from '../../subscription/subscriber-declaration/base-subscriber';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 import { InspectedServiceService } from '../inspected-service.service';
