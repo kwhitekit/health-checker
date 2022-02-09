@@ -14,6 +14,10 @@ export class InspectedServiceService {
     private inspectedServiceRepository: Repository<InspectedServiceDbEntity>,
     ) { }
 
+    public async getServiceById(id: string): Promise<InspectedServiceDbEntity | undefined> {
+        return this.inspectedServiceRepository.findOne(id);
+    }
+
     public async askHealth(id: string): Promise<HealthReportResDto> {
         const service = await this.inspectedServiceRepository.findOne(id);
         const { status } = await axios({
