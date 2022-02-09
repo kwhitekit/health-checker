@@ -2,6 +2,7 @@ import {
     Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put,
 } from '@nestjs/common';
 import { HealthReportResDto } from '../../general/health-report.res.dto';
+import { InspectedServiceDbEntity } from './common/inspected-service.db-entity';
 import { CreateInspectedServiceDto } from './dto/create.inspect-service.dto';
 import { InspectedServiceService } from './inspected-service.service';
 
@@ -9,34 +10,35 @@ import { InspectedServiceService } from './inspected-service.service';
 export class InspectedServiceController {
     constructor(private inspectedServiceService: InspectedServiceService) { }
 
-  @Get('/:serviceId/status')
+    @Get('/:serviceId/status')
     getService(@Param('serviceId', ParseUUIDPipe) serviceId: string): Promise<HealthReportResDto> {
         return this.inspectedServiceService.askHealth(serviceId);
     }
 
-  @Get()
-  getAllServices(): Promise<unknown[]> {
-      return Promise.resolve([]);
-  }
+    // TODO add pagination query
+    @Get()
+    getAllServices(): Promise<InspectedServiceDbEntity[]> {
+        return this.inspectedServiceService.getAllServices();
+    }
 
-  @Post()
-  addService(@Body() data: CreateInspectedServiceDto): Promise<unknown> {
-      return this.inspectedServiceService.createService(data);
-  }
+    @Post()
+    addService(@Body() data: CreateInspectedServiceDto): Promise<unknown> {
+        return this.inspectedServiceService.createService(data);
+    }
 
-  @Put(':serviceId')
-  updateService(
-    @Param('serviceId', ParseUUIDPipe) serviceId: string,
-    @Body() data: unknown,
-  ): Promise<unknown> {
-      return Promise.resolve({ serviceId, data });
-  }
+    @Put(':serviceId')
+    updateService(
+        @Param('serviceId', ParseUUIDPipe) serviceId: string,
+        @Body() data: unknown,
+    ): Promise<unknown> {
+        return Promise.resolve({ serviceId, data });
+    }
 
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @Delete(':serviceId')
-  deleteService(@Param('serviceId', ParseUUIDPipe) serviceId: string): Promise<void> {
-      Promise.resolve(serviceId);
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @Delete(':serviceId')
+    deleteService(@Param('serviceId', ParseUUIDPipe) serviceId: string): Promise<void> {
+        Promise.resolve(serviceId);
 
-      return Promise.resolve();
-  }
+        return Promise.resolve();
+    }
 }

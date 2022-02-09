@@ -14,6 +14,14 @@ export class InspectedServiceService {
     private inspectedServiceRepository: Repository<InspectedServiceDbEntity>,
     ) { }
 
+    // TODO normal pagination, with validation and genericable
+    public async getAllServices(take: number = 10, skip: number = 0) {
+        return this.inspectedServiceRepository.find({
+            take,
+            skip,
+        });
+    }
+
     public async getServiceById(id: string): Promise<InspectedServiceDbEntity | undefined> {
         return this.inspectedServiceRepository.findOne(id);
     }
