@@ -1,6 +1,7 @@
 import {
     Body, Controller, Post, UseGuards,
 } from '@nestjs/common';
+import { AddMoreSubscriptionsDto } from './dto/add-more-subscriptions.dto';
 import { RegisterSubscriberDto } from './dto/register-subscriber.dto';
 import { SubscriberTypeGuard } from './subscriber-declaration/subscriber-guard';
 import { SubscriptionService } from './subscription.service';
@@ -17,8 +18,10 @@ export class SubscriptionController {
         return this.subscriptionService.subscribe(servicesIds, constructorPayload);
     }
 
-    @Post('add')
-    addSubscriptions() {
+    @Post('add-more')
+    addMoreSubscriptions(@Body() addMoreSubscriptionsDto: AddMoreSubscriptionsDto): Promise<void> {
+        const { servicesIds, subscriberId } = addMoreSubscriptionsDto;
 
+        return this.subscriptionService.subscribe(servicesIds, subscriberId);
     }
 }
