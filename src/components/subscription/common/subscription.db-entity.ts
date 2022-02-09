@@ -28,4 +28,10 @@ export class SubscriptionDbEntity extends BaseDbEntity implements ISubscriptionE
         enum: SubscriberTypeEnum,
     })
     type: SubscriberTypeEnum;
+
+    @Column({
+        nullable: false,
+        type: 'json',
+    })
+    constructorPayload: string;
 }

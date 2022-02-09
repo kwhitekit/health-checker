@@ -20,22 +20,26 @@ export class SubscriptionService {
     }
 
     public async subscribe(serviceIds: [string], subscriberIdOrData: string | TSubscriberDto<SubscriberTypeEnum>) {
-        let subscriberId: string;
+        let subscription: SubscriptionDbEntity;
 
         if (typeof subscriberIdOrData !== 'string') {
-            const subscription = await this.subscriptionRepository.save({
+            subscription = await this.subscriptionRepository.save({
                 type: subscriberIdOrData.type,
+                constructorPayload: JSON.stringify(subscriberIdOrData),
                 services: serviceIds,
             });
-            subscriberId = subscription.id;
         } else {
-            subscriberId = subscriberIdOrData;
-            await this.subscriptionRepository.update({ id: subscriberIdOrData }, {
+            subscription = await this.subscriptionRepository.save({
+                id: subscriberIdOrData,
                 services: serviceIds,
             });
         }
 
-        this.subMonitor.subscribe(serviceIds, subscriberId);
+        this.subMonitor.subscribe(
+            serviceIds,
+            subscription.id,
+          JSON.parse(subscription.constructorPayload) as TSubscriberDto<SubscriberTypeEnum>,
+        );
     }
 
     public async unsubscribe(subscriberId: string, serviceIds?: [string]) {
