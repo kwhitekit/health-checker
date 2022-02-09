@@ -4,10 +4,12 @@ import { ConsoleSubscriber } from './console.subscriber';
 
 export const CONSOLE_SUBSCRIBER_CONTRACT: TSubscriberContract<SubscriberTypeEnum.CONSOLE> = {
     type: SubscriberTypeEnum.CONSOLE,
+
     dtoValidator(data) {
         return data?.type === SubscriberTypeEnum.CONSOLE;
     },
-    subscriberConstructor(data) {
-        return new ConsoleSubscriber(data.type, console.info);
+
+    resolveSubscriber(data) {
+        return ConsoleSubscriber.get(data.type, console.info);
     },
 };

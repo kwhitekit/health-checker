@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ALL_SUBSCRIBERS_MAP, TSubscriberDto } from '../../../subscribers/all-subscribers-map';
-import { TOnmessage } from '../../subscription/subscriber-declaration/base-subscriber';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
+import { BaseSubscriber } from '../../subscription/subscriber-declaration/base-subscriber';
 import { InspectedServiceService } from '../inspected-service.service';
 import { IPubMonitoring } from './pub-monitoring.interface';
 import { ISubMonitoring } from './sub-monitoring.interface';
@@ -22,18 +22,16 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
                 subscribersWithCb.set(
                     subscriberId,
                     ALL_SUBSCRIBERS_MAP[constructorPayload.type]
-                        .subscriberConstructor(constructorPayload)
-                        .onMessage,
+                        .resolveSubscriber(constructorPayload),
                 );
             } else {
                 this.serviceSubscribersWithCb.set(
                     serviceId,
-                    new Map<string, TOnmessage>()
+                    new Map<string, Promise<BaseSubscriber<SubscriberTypeEnum>>>()
                         .set(
                             subscriberId,
                             ALL_SUBSCRIBERS_MAP[constructorPayload.type]
-                                .subscriberConstructor(constructorPayload)
-                                .onMessage,
+                                .resolveSubscriber(constructorPayload),
                         ),
                 );
             }
@@ -44,7 +42,7 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
 
     private serviceMap = new Map<string, ReturnType<typeof setInterval>>();
 
-    private serviceSubscribersWithCb = new Map<string, Map<string, TOnmessage>>();
+    private serviceSubscribersWithCb = new Map<string, Map<string, Promise<BaseSubscriber<SubscriberTypeEnum>>>>();
 
     public unsubscribeAll(subscriberId: string) {
         this.serviceSubscribersWithCb.forEach((subscribersSet) => subscribersSet.delete(subscriberId));
@@ -73,15 +71,18 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
         // TODO add more serious and standard checking
         if (!firstHealth.status) return;
 
-        const subscribersMap = this.serviceSubscribersWithCb.get(serviceId) || new Map();
+        const subscribersMap = this.serviceSubscribersWithCb.get(serviceId) || new Map<string, Promise<BaseSubscriber<SubscriberTypeEnum>>>();
 
-        subscribersMap.forEach((onMessage) => onMessage(firstHealth));
+        subscribersMap.forEach((subscriberPromise) => subscriberPromise
+            .then((subscriber) => subscriber.onMessage(firstHealth)));
 
         const monitoring = setInterval(async () => {
             const health = await this.inspectedServiceService.askHealth(serviceId);
-            const actualSubscribers = this.serviceSubscribersWithCb.get(serviceId) || new Map();
+            const actualSubscribers = this.serviceSubscribersWithCb.get(serviceId) || new Map<string, Promise<BaseSubscriber<SubscriberTypeEnum>>>();
 
-            actualSubscribers.forEach((onMessage) => onMessage(health));
+            actualSubscribers
+                .forEach((subscriberPromise) => subscriberPromise
+                    .then((subscriber) => subscriber.onMessage(health)));
         }, 3000);
 
         this.serviceMap.set(serviceId, monitoring);

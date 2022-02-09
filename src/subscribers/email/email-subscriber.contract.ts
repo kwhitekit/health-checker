@@ -4,10 +4,12 @@ import { SubscriberTypeEnum } from '../subscriber-type.enum';
 import { EmailSubscriberDto } from './emai-subscriber.dto';
 import { EmailSubscriber } from './email.subscriber';
 
+let counter = 0;
+
 function emailOnMessage(message: HealthReportResDto) {
     console.log('=== EMAIL ===');
     console.log(message);
-    console.log('=============');
+    console.log('-'.repeat(Math.floor(Math.random() * 100)), ++counter);
 }
 
 export const EMAIL_SUBSCRIBER_CONTRACT: TSubscriberContract<SubscriberTypeEnum.EMAIL> = {
@@ -17,7 +19,7 @@ export const EMAIL_SUBSCRIBER_CONTRACT: TSubscriberContract<SubscriberTypeEnum.E
 
         return true;
     },
-    subscriberConstructor(dto: EmailSubscriberDto) {
-        return new EmailSubscriber(dto.type, emailOnMessage);
+    async resolveSubscriber(dto: EmailSubscriberDto) {
+        return EmailSubscriber.get(dto.type, emailOnMessage);
     },
 };

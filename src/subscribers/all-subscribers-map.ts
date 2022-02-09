@@ -8,7 +8,7 @@ export type TSubscriberDto<T extends SubscriberTypeEnum> = { type: T } & object;
 export type TSubscriberContract<T extends SubscriberTypeEnum> = {
   type: T,
   dtoValidator: (data: any) => boolean,
-  subscriberConstructor: (dto: TSubscriberDto<T>) => BaseSubscriber<T>,
+  resolveSubscriber: (dto: TSubscriberDto<T>) => Promise<BaseSubscriber<T>>,
 };
 
 export const ALL_SUBSCRIBERS_MAP: Record<SubscriberTypeEnum, TSubscriberContract<SubscriberTypeEnum>> = {
