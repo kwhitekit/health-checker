@@ -12,8 +12,16 @@ export class SubscriptionDbEntity extends BaseDbEntity implements ISubscriptionE
     @ManyToMany(() => InspectedServiceDbEntity)
     @JoinTable({
         name: TableNameEnum.SUBSCRIPTIONS_SERVICES,
+        joinColumn: {
+            name: 'subscription_id',
+            referencedColumnName: 'id',
+        },
+        inverseJoinColumn: {
+            name: 'service_id',
+            referencedColumnName: 'id',
+        },
     })
-    service_id: string;
+    services: InspectedServiceDbEntity[];
 
     @Column({
         nullable: false,
