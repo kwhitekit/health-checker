@@ -21,7 +21,6 @@ export class SubscriptionService {
 
     public async subscribe(serviceIds: [string], subscriberIdOrData: string | TSubscriberDto<SubscriberTypeEnum>) {
         let subscription: SubscriptionDbEntity;
-
         if (typeof subscriberIdOrData !== 'string') {
             subscription = await this.subscriptionRepository.save({
                 type: subscriberIdOrData.type,

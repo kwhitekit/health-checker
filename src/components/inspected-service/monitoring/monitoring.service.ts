@@ -15,7 +15,6 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
         subscriberId: string,
         constructorPayload: TSubscriberDto<SubscriberTypeEnum>,
     ): void {
-        console.log(serviceIds);
         serviceIds.forEach((serviceId) => {
             const subscribersWithCb = this.serviceSubscribersWithCb.get(serviceId);
 
@@ -39,6 +38,8 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
                 );
             }
         });
+
+        serviceIds.forEach((id) => this.startMonitoring(id));
     }
 
     private serviceMap = new Map<string, ReturnType<typeof setInterval>>();
