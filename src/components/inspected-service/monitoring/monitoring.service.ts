@@ -1,32 +1,56 @@
 import { Injectable } from '@nestjs/common';
+import { ALL_SUBSCRIBERS_MAP, TSubscriberDto } from '../../subscription/subscriber-declaration/all-subscribers-map';
+import { TOnmessage } from '../../subscription/subscriber-declaration/base-subscriber';
+import { SubscriberTypeEnum } from '../../subscription/subscriber-declaration/subscriber-type.enum';
 import { InspectedServiceService } from '../inspected-service.service';
 import { IPubMonitoring } from './pub-monitoring.interface';
 import { ISubMonitoring } from './sub-monitoring.interface';
 
 @Injectable()
 export class MonitoringService implements ISubMonitoring, IPubMonitoring {
-    constructor(private inspectedServiceService: InspectedServiceService) {}
+    constructor(private inspectedServiceService: InspectedServiceService) { }
 
-    private serviceMap = new Map<string, ReturnType<typeof setInterval>>();
-
-    private serviceSubscribersSet = new Map<string, Set<string>>();
-
-    public subscribe(serviceIds: [string], subscriberId: string): void {
+    subscribe(
+        serviceIds: [string],
+        subscriberId: string,
+        constructorPayload: TSubscriberDto<SubscriberTypeEnum>,
+    ): void {
         serviceIds.forEach((serviceId) => {
-            const subscribersSet = this.serviceSubscribersSet.get(serviceId);
+            const subscribersWithCb = this.serviceSubscribersWithCb.get(serviceId);
 
-            if (subscribersSet) subscribersSet.add(subscriberId);
-            else this.serviceSubscribersSet.set(serviceId, new Set<string>(serviceIds));
+            if (subscribersWithCb) {
+                subscribersWithCb.set(
+                    subscriberId,
+                    ALL_SUBSCRIBERS_MAP[constructorPayload.type]
+                        .subscriberConstructor(constructorPayload)
+                        .onMessage,
+                );
+            } else {
+                this.serviceSubscribersWithCb.set(
+                    serviceId,
+                    new Map<string, TOnmessage>()
+                        .set(
+                            subscriberId,
+                            ALL_SUBSCRIBERS_MAP[constructorPayload.type]
+                                .subscriberConstructor(constructorPayload)
+                                .onMessage,
+                        ),
+                );
+            }
         });
     }
 
+    private serviceMap = new Map<string, ReturnType<typeof setInterval>>();
+
+    private serviceSubscribersWithCb = new Map<string, Map<string, TOnmessage>>();
+
     public unsubscribeAll(subscriberId: string) {
-        this.serviceSubscribersSet.forEach((subscribersSet) => subscribersSet.delete(subscriberId));
+        this.serviceSubscribersWithCb.forEach((subscribersSet) => subscribersSet.delete(subscriberId));
     }
 
     public unsubscribe(serviceIds: [string], subscriberId): void {
         serviceIds.forEach((serviceId) => {
-            this.serviceSubscribersSet.get(serviceId)?.delete(subscriberId);
+            this.serviceSubscribersWithCb.get(serviceId)?.delete(subscriberId);
         });
     }
 
