@@ -1,4 +1,4 @@
-import { CONSOLE_SUBSCRIBER_CONTRACT } from '../../../subscribers/console.subscriber';
+import { CONSOLE_SUBSCRIBER_CONTRACT } from '../../../subscribers/console/console.subscriber';
 import { BaseSubscriber } from './base-subscriber';
 import { SubscriberTypeEnum } from './subscriber-type.enum';
 
