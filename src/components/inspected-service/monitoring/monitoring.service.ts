@@ -7,41 +7,40 @@ import { ISubMonitoring } from './sub-monitoring.interface';
 export class MonitoringService implements ISubMonitoring, IPubMonitoring {
     constructor(private inspectedServiceService: InspectedServiceService) {}
 
-    private monitorServicesMap = new Map<string, ReturnType<typeof setInterval>>();
+    private serviceMap = new Map<string, ReturnType<typeof setInterval>>();
 
-    private subscribersMap = new Map<string, Set<string>>();
+    private serviceSubscribersSet = new Map<string, Set<string>>();
 
-    public subscribe(serviceId: string, subscriberId: string): void {
-        const subscription = this.subscribersMap.get(serviceId);
+    public subscribe(serviceIds: [string], subscriberId: string): void {
+        serviceIds.forEach((serviceId) => {
+            const subscribersSet = this.serviceSubscribersSet.get(serviceId);
 
-        if (!subscription) {
-            this.subscribersMap.set(serviceId, new Set([subscriberId]));
-
-            return;
-        }
-
-        subscription.add(subscriberId);
+            if (subscribersSet) subscribersSet.add(subscriberId);
+            else this.serviceSubscribersSet.set(serviceId, new Set<string>(serviceIds));
+        });
     }
 
     public unsubscribeAll(subscriberId: string) {
-        this.subscribersMap.delete(subscriberId);
+        this.serviceSubscribersSet.forEach((subscribersSet) => subscribersSet.delete(subscriberId));
     }
 
-    public unsubscribe(serviceId: string, subscriberId): void {
-        this.subscribersMap.get(serviceId)?.delete(subscriberId);
+    public unsubscribe(serviceIds: [string], subscriberId): void {
+        serviceIds.forEach((serviceId) => {
+            this.serviceSubscribersSet.get(serviceId)?.delete(subscriberId);
+        });
     }
 
     public stopMonitoring(serviceId: string) {
-        const monitoring = this.monitorServicesMap.get(serviceId);
+        const monitoring = this.serviceMap.get(serviceId);
 
         if (!monitoring) return;
 
         clearInterval(monitoring);
-        this.monitorServicesMap.delete(serviceId);
+        this.serviceMap.delete(serviceId);
     }
 
     public async startMonitoring(serviceId: string) {
-        if (this.monitorServicesMap.has(serviceId)) return;
+        if (this.serviceMap.has(serviceId)) return;
 
         const firstMonitor = await this.inspectedServiceService.askHealth(serviceId);
 
@@ -52,6 +51,6 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
             await this.inspectedServiceService.askHealth(serviceId);
         }, 3000);
 
-        this.monitorServicesMap.set(serviceId, monitoring);
+        this.serviceMap.set(serviceId, monitoring);
     }
 }

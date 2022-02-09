@@ -21,7 +21,7 @@ export class SubscriptionDbEntity extends BaseDbEntity implements ISubscriptionE
             referencedColumnName: 'id',
         },
     })
-    services: InspectedServiceDbEntity[];
+    services: InspectedServiceDbEntity[] | string[];
 
     @Column({
         nullable: false,
