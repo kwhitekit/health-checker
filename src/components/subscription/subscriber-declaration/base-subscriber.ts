@@ -3,7 +3,7 @@ import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 
 export type TOnmessage = (message: HealthReportResDto) => void;
 export class BaseSubscriber<T extends SubscriberTypeEnum> {
-    public static async get<U extends SubscriberTypeEnum>(type: U, onMessage: TOnmessage) {
+    public static async get(type: SubscriberTypeEnum, onMessage: TOnmessage) {
         return Promise.resolve(new BaseSubscriber(type, onMessage));
     }
 
