@@ -1,5 +1,5 @@
-import { BaseSubscriberDto } from '../../../subscribers/all-subscribers-map';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
+import { BaseSubscriberDto } from '../../subscription/subscriber-declaration/base-subscriber.dto';
 
 export interface ISubMonitoring {
     subscribe: (serviceIds: [string], subscriberId: string, constructorPayload: BaseSubscriberDto<SubscriberTypeEnum>) => void,

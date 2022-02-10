@@ -4,8 +4,10 @@ import {
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { validateWithClassValidator } from '../../../general/validate-with-class-validator.util';
-import { ALL_SUBSCRIBERS_MAP, BaseSubscriberDto, BaseSubscriberWithServiceIdsDto } from '../../../subscribers/all-subscribers-map';
+import { ALL_SUBSCRIBERS_MAP } from '../../../subscribers/all-subscribers-map';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
+import { BaseSubscriberWithServiceIdsDto } from './base-subscriber-with-service-ids.dto';
+import { BaseSubscriberDto } from './base-subscriber.dto';
 
 function subscriberGuardCanActivate(context: ExecutionContext, options: {
     withServiceIds: boolean

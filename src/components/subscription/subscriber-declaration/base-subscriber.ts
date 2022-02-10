@@ -1,6 +1,6 @@
 import { HealthReportResDto } from '../../../general/health-report.res.dto';
-import { BaseSubscriberDto } from '../../../subscribers/all-subscribers-map';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
+import { BaseSubscriberDto } from './base-subscriber.dto';
 
 export type TOnmessage = (message: HealthReportResDto) => void;
 export class BaseSubscriber<T extends SubscriberTypeEnum> {

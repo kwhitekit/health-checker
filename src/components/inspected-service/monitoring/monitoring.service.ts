@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ALL_SUBSCRIBERS_MAP, BaseSubscriberDto } from '../../../subscribers/all-subscribers-map';
+import { ALL_SUBSCRIBERS_MAP } from '../../../subscribers/all-subscribers-map';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 import { BaseSubscriber } from '../../subscription/subscriber-declaration/base-subscriber';
+import { BaseSubscriberDto } from '../../subscription/subscriber-declaration/base-subscriber.dto';
 import { IOnMessage } from '../../subscription/subscriber-declaration/onmessage.interface';
 import { InspectedServiceService } from '../inspected-service.service';
 import { IPubMonitoring } from './pub-monitoring.interface';
