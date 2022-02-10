@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { BaseSubscriberWithServiceIdsDto } from '../components/subscription/subscriber-declaration/base-subscriber-with-service-ids.dto';
 import { SubscriptionService } from '../components/subscription/subscription.service';
 import { EmailSubscriberDto } from './email/emai-subscriber.dto';
+import { SmsSubscriberDto } from './sms-subscriber/sms-subscriber.dto';
 import { SubscriberTypeEnum } from './subscriber-type.enum';
 
 @ApiTags('subscriber')
@@ -21,7 +22,7 @@ export class SubscriberController implements Record<SubscriberTypeEnum, Function
     }
 
     @Post(SubscriberTypeEnum.SMS)
-    [SubscriberTypeEnum.SMS]() {
-
+    [SubscriberTypeEnum.SMS](@Body() body: SmsSubscriberDto) {
+        return this.service.registerSubscription(body);
     }
 }

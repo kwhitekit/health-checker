@@ -28,7 +28,8 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
                 subscribersWithCb.set(
                     subscriberId,
                     ALL_SUBSCRIBERS_MAP[constructorPayload.type]
-                        .resolveSubscriber(constructorPayload),
+                        .subscriber
+                        .get(constructorPayload),
                 );
             } else {
                 this.serviceSubscribersWithCb.set(
@@ -37,7 +38,8 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
                         .set(
                             subscriberId,
                             ALL_SUBSCRIBERS_MAP[constructorPayload.type]
-                                .resolveSubscriber(constructorPayload),
+                                .subscriber
+                                .get(constructorPayload),
                         ),
                 );
             }
