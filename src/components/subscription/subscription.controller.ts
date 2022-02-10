@@ -3,14 +3,14 @@ import {
 } from '@nestjs/common';
 import { AddMoreSubscriptionsDto } from './dto/add-more-subscriptions.dto';
 import { RegisterSubscriberDto } from './dto/register-subscriber.dto';
-import { SubscriberTypeServiceIdsGuard } from './subscriber-declaration/subscriber-guard';
+import { SubscriberWithServiceIdsGuard } from './subscriber-declaration/subscriber-guard';
 import { SubscriptionService } from './subscription.service';
 
 @Controller('subscription')
 export class SubscriptionController {
     constructor(private subscriptionService: SubscriptionService) { }
 
-    @UseGuards(new SubscriberTypeServiceIdsGuard())
+    @UseGuards(new SubscriberWithServiceIdsGuard())
     @Post()
     public registerSubscriber<T extends RegisterSubscriberDto>(@Body() subscriberDto: T): Promise<void> {
         const { serviceIds: servicesIds, ...constructorPayload } = subscriberDto;

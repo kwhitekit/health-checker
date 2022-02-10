@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { MonitoringService } from '../inspected-service/monitoring/monitoring.service';
 import { ISubMonitoring } from '../inspected-service/monitoring/sub-monitoring.interface';
 import { SubscriptionDbEntity } from './common/subscription.db-entity';
-import { TSubscriberDto } from '../../subscribers/all-subscribers-map';
+import { BaseSubscriberDto } from '../../subscribers/all-subscribers-map';
 import { SubscriberTypeEnum } from '../../subscribers/subscriber-type.enum';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class SubscriptionService {
         this.subMonitor = monitoringService;
     }
 
-    public async subscribe(serviceIds: [string], subscriberIdOrData: string | TSubscriberDto<SubscriberTypeEnum>) {
+    public async subscribe(serviceIds: [string], subscriberIdOrData: string | BaseSubscriberDto<SubscriberTypeEnum>) {
         let subscription: SubscriptionDbEntity;
         if (typeof subscriberIdOrData !== 'string') {
             subscription = await this.subscriptionRepository.save({
@@ -37,7 +37,7 @@ export class SubscriptionService {
         this.subMonitor.subscribe(
             serviceIds,
             subscription.id,
-          JSON.parse(subscription.constructorPayload) as TSubscriberDto<SubscriberTypeEnum>,
+          JSON.parse(subscription.constructorPayload) as BaseSubscriberDto<SubscriberTypeEnum>,
         );
     }
 

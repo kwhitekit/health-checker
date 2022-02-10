@@ -26,6 +26,7 @@ export class InspectedServiceService {
         return this.inspectedServiceRepository.findOne(id);
     }
 
+    // TODO add 'unavailabelFrom'/'To'
     public async askHealth(id: string): Promise<HealthReportResDto> {
         const service = await this.inspectedServiceRepository.findOne(id);
         const { status } = await axios({

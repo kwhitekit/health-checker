@@ -7,6 +7,7 @@ import { InspectedServiceDbEntity } from '../../inspected-service/common/inspect
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 import { ISubscriptionEntity } from './subscription.entity.interface';
 
+// TODO write pivot table in separate file and add 'active' column to it
 @Entity(TableNameEnum.SUBSCRIPTIONS)
 export class SubscriptionDbEntity extends BaseDbEntity implements ISubscriptionEntity {
     @ManyToMany(() => InspectedServiceDbEntity)

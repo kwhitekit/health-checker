@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsEnum, IsUUID } from 'class-validator';
-import { TSubscriberDto } from '../../../subscribers/all-subscribers-map';
+import { BaseSubscriberDto } from '../../../subscribers/all-subscribers-map';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 
-export class RegisterSubscriberDto implements TSubscriberDto<SubscriberTypeEnum> {
+export class RegisterSubscriberDto implements BaseSubscriberDto<SubscriberTypeEnum> {
     @ApiProperty({
         enum: SubscriberTypeEnum,
     })

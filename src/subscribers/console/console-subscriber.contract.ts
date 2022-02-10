@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { TSubscriberContract } from '../all-subscribers-map';
 import { SubscriberTypeEnum } from '../subscriber-type.enum';
 import { ConsoleSubscriber } from './console.subscriber';
@@ -6,7 +7,9 @@ export const CONSOLE_SUBSCRIBER_CONTRACT: TSubscriberContract<SubscriberTypeEnum
     type: SubscriberTypeEnum.CONSOLE,
 
     dtoValidator(dto) {
-        return dto?.type === SubscriberTypeEnum.CONSOLE;
+        if (dto?.type === SubscriberTypeEnum.CONSOLE) return;
+
+        throw new BadRequestException(`ConsoleSubscriber should have prop "type" with "console" value`);
     },
 
     resolveSubscriber(dto) {

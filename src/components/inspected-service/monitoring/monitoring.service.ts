@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ALL_SUBSCRIBERS_MAP, TSubscriberDto } from '../../../subscribers/all-subscribers-map';
+import { ALL_SUBSCRIBERS_MAP, BaseSubscriberDto } from '../../../subscribers/all-subscribers-map';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
 import { BaseSubscriber } from '../../subscription/subscriber-declaration/base-subscriber';
 import { IOnMessage } from '../../subscription/subscriber-declaration/onmessage.interface';
@@ -11,10 +11,14 @@ import { ISubMonitoring } from './sub-monitoring.interface';
 export class MonitoringService implements ISubMonitoring, IPubMonitoring {
     constructor(private inspectedServiceService: InspectedServiceService) { }
 
+    private serviceMap = new Map<string, ReturnType<typeof setInterval>>();
+
+    private serviceSubscribersWithCb = new Map<string, Map<string, Promise<BaseSubscriber<SubscriberTypeEnum>>>>();
+
     subscribe(
         serviceIds: [string],
         subscriberId: string,
-        constructorPayload: TSubscriberDto<SubscriberTypeEnum>,
+        constructorPayload: BaseSubscriberDto<SubscriberTypeEnum>,
     ): void {
         serviceIds.forEach((serviceId) => {
             const subscribersWithCb = this.serviceSubscribersWithCb.get(serviceId);
@@ -40,10 +44,6 @@ export class MonitoringService implements ISubMonitoring, IPubMonitoring {
 
         serviceIds.forEach((id) => this.startMonitoring(id));
     }
-
-    private serviceMap = new Map<string, ReturnType<typeof setInterval>>();
-
-    private serviceSubscribersWithCb = new Map<string, Map<string, Promise<BaseSubscriber<SubscriberTypeEnum>>>>();
 
     public unsubscribeAll(subscriberId: string) {
         this.serviceSubscribersWithCb.forEach((subscribersSet) => subscribersSet.delete(subscriberId));

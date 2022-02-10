@@ -1,4 +1,4 @@
-import { validateSync } from 'class-validator';
+import { validateWithClassValidator } from '../../general/validate-with-class-validator.util';
 import { TSubscriberContract } from '../all-subscribers-map';
 import { SubscriberTypeEnum } from '../subscriber-type.enum';
 import { EmailSubscriberDto } from './emai-subscriber.dto';
@@ -8,12 +8,7 @@ export const EMAIL_SUBSCRIBER_CONTRACT: TSubscriberContract<SubscriberTypeEnum.E
     type: SubscriberTypeEnum.EMAIL,
 
     dtoValidator(data: EmailSubscriberDto) {
-        // eslint-disable-next-line no-new
-        const dto = new EmailSubscriberDto();
-        // eslint-disable-next-line no-return-assign
-        Object.keys(data).forEach((key) => dto[key] = data[key]);
-
-        return validateSync(dto);
+        validateWithClassValidator(data, EmailSubscriberDto);
     },
     async resolveSubscriber(dto: EmailSubscriberDto) {
         return EmailSubscriber.get(dto);

@@ -2,10 +2,10 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
     IsArray, IsEmail, IsIn, IsNotEmpty, IsOptional, IsString, Length,
 } from 'class-validator';
-import { TSubscriberDto } from '../all-subscribers-map';
+import { BaseSubscriberDto } from '../all-subscribers-map';
 import { SubscriberTypeEnum } from '../subscriber-type.enum';
 
-export class EmailSubscriberDto implements TSubscriberDto<SubscriberTypeEnum.EMAIL> {
+export class EmailSubscriberDto implements BaseSubscriberDto<SubscriberTypeEnum.EMAIL> {
     @ApiProperty({
         enumName: SubscriberTypeEnum.EMAIL,
     })
