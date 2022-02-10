@@ -1,12 +1,14 @@
-import Vonage, { } from '@vonage/server-sdk';
+import TVonage from '@vonage/server-sdk';
 import { BaseSubscriber } from '../../components/subscription/subscriber-declaration/base-subscriber';
 import { IOnMessage } from '../../components/subscription/subscriber-declaration/onmessage.interface';
 import { HealthReportResDto } from '../../general/health-report.res.dto';
 import { SubscriberTypeEnum } from '../subscriber-type.enum';
 import { SmsSubscriberDto } from './sms-subscriber.dto';
 
+const Vonage = require('@vonage/server-sdk');
+
 export class SmsSubscriber extends BaseSubscriber<SubscriberTypeEnum.SMS> implements IOnMessage {
-    private static vonage: Vonage;
+    private static vonage: TVonage;
 
     onMessage(message: HealthReportResDto) {
         const { to } = this.dto;
