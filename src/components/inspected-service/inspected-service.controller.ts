@@ -1,11 +1,13 @@
 import {
     Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { HealthReportResDto } from '../../general/health-report.res.dto';
 import { InspectedServiceDbEntity } from './common/inspected-service.db-entity';
 import { CreateInspectedServiceDto } from './dto/create.inspect-service.dto';
 import { InspectedServiceService } from './inspected-service.service';
 
+@ApiTags('services')
 @Controller('services')
 export class InspectedServiceController {
     constructor(private inspectedServiceService: InspectedServiceService) { }
