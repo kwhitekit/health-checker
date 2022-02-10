@@ -19,4 +19,9 @@ export class SubscriberController implements Record<SubscriberTypeEnum, Function
     [SubscriberTypeEnum.EMAIL](@Body() body: EmailSubscriberDto) {
         return this.service.registerSubscription(body);
     }
+
+    @Post(SubscriberTypeEnum.SMS)
+    [SubscriberTypeEnum.SMS]() {
+
+    }
 }

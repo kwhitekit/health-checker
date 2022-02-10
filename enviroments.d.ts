@@ -11,6 +11,9 @@ declare global {
 
             EMAIL_USER?: string,
             EMAIL_PASSWORD?: string,
+
+            VONAGE_API_KEY?: string,
+            VONAGE_API_SECRET?: string,
         }
     }
 }
