@@ -26,7 +26,7 @@ export class SmsSubscriber extends BaseSubscriber<SubscriberTypeEnum.SMS> implem
         super(dto.type);
     }
 
-    public static async get(dto: SmsSubscriberDto) {
+    public static async get(dto: SmsSubscriberDto): Promise<SmsSubscriber> {
         SmsSubscriber.vonage = new Vonage({
             apiKey: process.env.VONAGE_API_KEY,
             apiSecret: process.env.VONAGE_API_SECRET,

@@ -1,10 +1,10 @@
 import { HealthReportResDto } from '../../../general/health-report.res.dto';
 import { SubscriberTypeEnum } from '../../../subscribers/subscriber-type.enum';
-import { BaseSubscriberWithServiceIdsDto } from './base-subscriber-with-service-ids.dto';
+import { RegisterSubscriberDto } from '../dto/register-subscriber.dto';
 
 export type TOnmessage = (message: HealthReportResDto) => void;
 export class BaseSubscriber<T extends SubscriberTypeEnum> {
-    public static async get(dto: BaseSubscriberWithServiceIdsDto<SubscriberTypeEnum>) {
+    public static async get(dto: RegisterSubscriberDto) {
         return Promise.resolve(new BaseSubscriber(dto.type));
     }
 

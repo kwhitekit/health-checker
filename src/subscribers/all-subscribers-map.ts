@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
+import { RegisterSubscriberDto } from '../components/subscription/dto/register-subscriber.dto';
 import { BaseSubscriber } from '../components/subscription/subscriber-declaration/base-subscriber';
-import { BaseSubscriberWithServiceIdsDto } from '../components/subscription/subscriber-declaration/base-subscriber-with-service-ids.dto';
 import { IOnMessage } from '../components/subscription/subscriber-declaration/onmessage.interface';
 import { ConsoleSubscriber } from './console/console.subscriber';
 import { EmailSubscriber } from './email/email.subscriber';
@@ -8,7 +8,7 @@ import { SmsSubscriber } from './sms-subscriber/sms.subscriber';
 import { SubscriberTypeEnum } from './subscriber-type.enum';
 
 type TSubscriberGetter<T extends SubscriberTypeEnum> = {
-  get: (dto: BaseSubscriberWithServiceIdsDto<T>) => Promise<BaseSubscriber<T> & IOnMessage>
+  get: (dto: RegisterSubscriberDto) => Promise<BaseSubscriber<T> & IOnMessage>
 }
 
 export type TSubscriberContract<T extends SubscriberTypeEnum> = {
