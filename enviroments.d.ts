@@ -9,6 +9,9 @@ declare global {
             PG_PASS?: string,
             PG_DATABASE?: string,
 
+            TELEGRAM_API_KEY?: string,
+            TELEGRAM_BOT_NIKNAME?: string,
+
             EMAIL_USER?: string,
             EMAIL_PASSWORD?: string,
 

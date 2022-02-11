@@ -6,6 +6,7 @@ import { ConsoleSubscriber } from './console/console.subscriber';
 import { EmailSubscriber } from './email/email.subscriber';
 import { SmsSubscriber } from './sms-subscriber/sms.subscriber';
 import { SubscriberTypeEnum } from './subscriber-type.enum';
+import { TelegramSubscriber } from './telegram/telegram.subscriber';
 
 type TSubscriberGetter<T extends SubscriberTypeEnum> = {
   get: (dto: RegisterSubscriberDto) => Promise<BaseSubscriber<T> & IOnMessage>
@@ -29,5 +30,9 @@ export const ALL_SUBSCRIBERS_MAP: Record<SubscriberTypeEnum, TSubscriberContract
     sms: {
         type: SubscriberTypeEnum.SMS,
         subscriber: SmsSubscriber,
+    },
+    telegram: {
+        subscriber: TelegramSubscriber,
+        type: SubscriberTypeEnum.TELEGRAM,
     },
 };

@@ -1,15 +1,15 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
-    IsArray, IsEmail, IsIn, IsNotEmpty, IsOptional, IsString, Length,
+    IsArray, IsEmail, IsNotEmpty, IsOptional, IsString, Length, Matches,
 } from 'class-validator';
 import { RegisterSubscriberDto } from '../../components/subscription/dto/register-subscriber.dto';
 import { SubscriberTypeEnum } from '../subscriber-type.enum';
 
 export class EmailSubscriberDto extends RegisterSubscriberDto {
     @ApiProperty({
-        enumName: SubscriberTypeEnum.EMAIL,
+        type: SubscriberTypeEnum.EMAIL,
     })
-    @IsIn([SubscriberTypeEnum.EMAIL])
+    @Matches(new RegExp(SubscriberTypeEnum.EMAIL))
     type: SubscriberTypeEnum.EMAIL;
 
     @ApiProperty({

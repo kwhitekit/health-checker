@@ -3,4 +3,5 @@ export enum SubscriberTypeEnum {
   CONSOLE = 'console',
   EMAIL = 'email',
   SMS = 'sms',
+  TELEGRAM = 'telegram',
 }

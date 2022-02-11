@@ -8,21 +8,25 @@ import { EmailSubscriberDto } from './emai-subscriber.dto';
 export class EmailSubscriber extends BaseSubscriber<SubscriberTypeEnum.EMAIL> implements IOnMessage {
     public static transporter: Transporter;
 
+    public transporter: Transporter | null;
+
     private emailOptions: Omit<EmailSubscriberDto, 'type'>;
 
     protected constructor(
         data: EmailSubscriberDto,
+        transporter: Transporter | null,
     ) {
         const { type, ...emailOptions } = data;
         super(type);
 
         this.emailOptions = emailOptions;
+        this.transporter = transporter;
     }
 
     async onMessage(this: EmailSubscriber, message: HealthReportResDto) {
         const { from, to } = this.emailOptions;
 
-        EmailSubscriber.transporter.sendMail({
+        (this.transporter || EmailSubscriber.transporter).sendMail({
             from,
             to: to.join(),
             subject: message.name,
@@ -41,14 +45,18 @@ export class EmailSubscriber extends BaseSubscriber<SubscriberTypeEnum.EMAIL> im
             ? dto.pass
             : process.env.EMAIL_PASSWORD;
 
-        EmailSubscriber.transporter = await createTransport({
-            service: 'gmail',
-            auth: {
-                user,
-                pass,
-            },
-        } as TransportOptions);
+        const transporter = dto.pass || EmailSubscriber.transporter
+            ? await createTransport({
+                service: 'gmail',
+                auth: {
+                    user,
+                    pass,
+                },
+            } as TransportOptions)
+            : EmailSubscriber.transporter;
 
-        return new EmailSubscriber(dto);
+        if (dto.pass) return new EmailSubscriber(dto, transporter);
+
+        return new EmailSubscriber(dto, null);
     }
 }
