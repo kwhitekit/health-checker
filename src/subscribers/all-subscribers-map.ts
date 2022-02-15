@@ -4,6 +4,7 @@ import { BaseSubscriber } from '../components/subscription/subscriber-declaratio
 import { IOnMessage } from '../components/subscription/subscriber-declaration/onmessage.interface';
 import { ConsoleSubscriber } from './console/console.subscriber';
 import { EmailSubscriber } from './email/email.subscriber';
+import { MongoSubscriber } from './mongo/mongo.subscriber';
 import { SmsSubscriber } from './sms-subscriber/sms.subscriber';
 import { SubscriberTypeEnum } from './subscriber-type.enum';
 import { TelegramSubscriber } from './telegram/telegram.subscriber';
@@ -34,5 +35,9 @@ export const ALL_SUBSCRIBERS_MAP: Record<SubscriberTypeEnum, TSubscriberContract
     telegram: {
         subscriber: TelegramSubscriber,
         type: SubscriberTypeEnum.TELEGRAM,
+    },
+    mongo: {
+        subscriber: MongoSubscriber,
+        type: SubscriberTypeEnum.MONGO,
     },
 };
