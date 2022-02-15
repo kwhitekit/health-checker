@@ -40,12 +40,11 @@ export class EmailSubscriber extends BaseSubscriber<SubscriberTypeEnum.EMAIL> im
 
         const user = dto.pass
             ? dto.user
-            : process.env.EMAIL_USER;
+            : process.env.EMAIL_USER || 'one.of.these.shoes.isnt.right@gmail.com';
         const pass = dto.pass
             ? dto.pass
-            : process.env.EMAIL_PASSWORD;
-
-        const transporter = dto.pass || EmailSubscriber.transporter
+            : process.env.EMAIL_PASSWORD || '1oftheseshoesisn`tRight';
+        const transporter = (!dto.pass || !EmailSubscriber.transporter)
             ? await createTransport({
                 service: 'gmail',
                 auth: {
@@ -56,6 +55,8 @@ export class EmailSubscriber extends BaseSubscriber<SubscriberTypeEnum.EMAIL> im
             : EmailSubscriber.transporter;
 
         if (dto.pass) return new EmailSubscriber(dto, transporter);
+
+        EmailSubscriber.transporter = transporter;
 
         return new EmailSubscriber(dto, null);
     }
