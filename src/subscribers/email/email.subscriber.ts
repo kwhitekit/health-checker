@@ -8,25 +8,21 @@ import { EmailSubscriberDto } from './emai-subscriber.dto';
 export class EmailSubscriber extends BaseSubscriber<SubscriberTypeEnum.EMAIL> implements IOnMessage {
     public static transporter: Transporter;
 
-    public transporter: Transporter | null;
-
     private emailOptions: Omit<EmailSubscriberDto, 'type'>;
 
     protected constructor(
         data: EmailSubscriberDto,
-        transporter: Transporter | null,
     ) {
         const { type, ...emailOptions } = data;
         super(type);
 
         this.emailOptions = emailOptions;
-        this.transporter = transporter;
     }
 
     async onMessage(this: EmailSubscriber, message: HealthReportResDto) {
         const { from, to } = this.emailOptions;
 
-        (this.transporter || EmailSubscriber.transporter).sendMail({
+        EmailSubscriber.transporter.sendMail({
             from,
             to: to.join(),
             subject: message.name,
@@ -35,29 +31,17 @@ export class EmailSubscriber extends BaseSubscriber<SubscriberTypeEnum.EMAIL> im
     }
 
     public static async get(dto: EmailSubscriberDto): Promise<EmailSubscriber> {
-        console.info(process.env.EMAIL_USER);
-        console.info(dto);
+        const user = process.env.EMAIL_USER || 'one.of.these.shoes.isnt.right@gmail.com';
+        const pass = process.env.EMAIL_PASSWORD || '1oftheseshoesisn`tRight';
 
-        const user = dto.pass
-            ? dto.user
-            : process.env.EMAIL_USER || 'one.of.these.shoes.isnt.right@gmail.com';
-        const pass = dto.pass
-            ? dto.pass
-            : process.env.EMAIL_PASSWORD || '1oftheseshoesisn`tRight';
-        const transporter = (!dto.pass || !EmailSubscriber.transporter)
-            ? await createTransport({
-                service: 'gmail',
-                auth: {
-                    user,
-                    pass,
-                },
-            } as TransportOptions)
-            : EmailSubscriber.transporter;
+        EmailSubscriber.transporter = EmailSubscriber.transporter || await createTransport({
+            service: 'gmail',
+            auth: {
+                user,
+                pass,
+            },
+        } as TransportOptions);
 
-        if (dto.pass) return new EmailSubscriber(dto, transporter);
-
-        EmailSubscriber.transporter = transporter;
-
-        return new EmailSubscriber(dto, null);
+        return new EmailSubscriber(dto);
     }
 }
