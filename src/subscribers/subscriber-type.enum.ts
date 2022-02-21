@@ -4,4 +4,5 @@ export enum SubscriberTypeEnum {
   EMAIL = 'email',
   SMS = 'sms',
   TELEGRAM = 'telegram',
+  MONGO = 'mongo'
 }
